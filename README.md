@@ -35,3 +35,56 @@ Each feature represents the **energy within a specific frequency band** of the s
 | Logistic Regression | 76.2% | Fast and interpretable |
 
 ### Pipeline Architecture
+Raw Sonar Data (208 × 60)
+↓
+Data Preprocessing
+├── Train-test split (80/20 with stratification)
+├── Label encoding (M→1, R→0)
+└── Feature standardization (StandardScaler)
+↓
+Model Training (3 algorithms)
+↓
+Evaluation Metrics
+├── Accuracy score
+├── Confusion matrix
+├── Precision, Recall, F1-score
+└── Classification report
+↓
+Best Model: SVM (81.0% accuracy)
+↓
+Prediction API (new sonar readings)
+
+
+## 🔧 Technical Implementation
+
+### Prerequisites
+
+```bash
+Python 3.8+
+pip install -r requirements.txt
+```
+
+# Clone the repository
+git clone https://github.com/yourusername/sonar-threat-detection-ml.git
+cd sonar-threat-detection-ml
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the complete pipeline
+python src/train.py
+
+# Load and preprocess data
+data = pd.read_csv('sonar.all-data', header=None, names=column_names)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+# Standardize features
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+
+# Train SVM classifier
+svm = SVC(kernel='rbf', random_state=42)
+svm.fit(X_train_scaled, y_train)
+
+# Predict on new sonar readings
+prediction = predict_sonar(svm, scaler, new_sonar_data)
